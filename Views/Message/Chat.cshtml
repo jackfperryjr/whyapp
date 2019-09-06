@@ -1,0 +1,54 @@
+@model IEnumerable<WhyApp.Models.MessageModel>
+@using WhyApp.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Chat";
+    var user = await UserManager.GetUserAsync(User);
+    var receiverId = "";
+    var senderId = "";
+    var routeId = @ViewContext.RouteData.Values["id"].ToString();
+}
+
+<h4 class="text-center top-margin">Chat</h4>
+<form method="post" enctype="multipart/form-data">
+    <div class="row form-group">
+        <div class="col-md-6" style="margin: 0 auto;">
+            <ul class="container list-group message-container">                        
+                @foreach (var message in Model) 
+                {
+                    @if(@message.SenderId == @user.Id) 
+                    {
+                        <li style="display:inline-block;clear: both; margin: 2px;float:right;"><img style="float: right;border-radius: 50%; height: 30px; width: 30px;margin-left:5px;" src="@user.Picture"><span class="float-right bg-primary text-white" style="width: auto;border-radius: 7px;padding: 1% 2%;">@message.Content</span></li>
+                    }
+                    else 
+                    {
+                        <li style="display:inline-block;clear: both;margin: 2px;"> <img style="float: left;border-radius: 50%; height: 30px; width: 30px;margin-right:5px;" src="~/images/icons/icon-puppy.png"><span class="float-left bg-success text-white" style="width: auto;border-radius: 7px;padding: 1% 2%;">@message.Content</span></li>
+                    }
+                    receiverId = @message.ReceiverId;
+                    senderId = @message.SenderId;
+                }
+            </ul>
+        </div>
+    </div>
+
+</form>
+    @using(Html.BeginForm("SendMessage","Message"))
+    {
+    <div class="row form-group">
+        @if (user.Id == @receiverId)
+        {
+            <input type="hidden" name="id" value="@senderId" />
+        }
+        else 
+        {
+            receiverId = routeId;
+            <input type="hidden" name="id" value="@receiverId" />
+        }
+        <div class="col-md-6 margin-auto">
+            <input name="content" class="form-group input-group message-input" placeholder="Type message here..." />
+            <button class="input-group-button btn btn-primary" style="width:100%;">Send</button>
+        </div>
+    </div>
+    }
