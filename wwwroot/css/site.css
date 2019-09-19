@@ -59,10 +59,9 @@ body {
   height:200px;
   border-radius:50%;
   object-fit: fill;
-  /* box-shadow: 2px 2px 4px #37474F; */
-  /* float:right; */
   background-position: center center;
   background-repeat: no-repeat;
+  border: 2px solid #ffffff;
 }
 .img-user-navbar {
   border-radius:50%;
