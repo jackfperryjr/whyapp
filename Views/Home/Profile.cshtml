@@ -13,22 +13,18 @@
     </div>
 </div>
 <div class="row top-margin" style="margin-top: 80px;">
-    <div class="col-md-4" style="margin:0 0 0 auto;">
+    <div class="col-md-4" style="margin:0 0 10px auto;">
         <h3 class="text-center">@Model.UserName</h3>
         <h5 class="text-center">@Model.City, @Model.State</h5>
-        <h5>@Model.Profile</h5>
-        <!-- <div class="row text-center" style="font-size: 44px;margin: 60px auto;">
-            <i class="fab fa-galactic-republic text-danger"></i>
-            <i class="fas fa-meteor text-success"></i>
-            <i class="fas fa-robot text-warning"></i>
-        </div> -->
+        <h5></h5>
+        <h5 style="margin: 20px 0;">@Model.Profile</h5>
         <h5></h5>
     </div>
 </div>
 
 <div class="row text-center" style="margin-bottom: 50px;">
     <a class="btn btn-primary" style="width:45%;margin:0 5px 0 auto;" data-toggle="modal" href="@("#newMessageModal")">Message</a>
-    <a class="btn btn-secondary" style="width:45%;margin:0 auto 0 5px;" asp-action="Friend">Go Back</a>
+    <a class="btn btn-secondary" style="width:45%;margin:0 auto 0 5px;" asp-action="Friends">Go Back</a>
     <div class="modal fade top-margin" id="@("newMessageModal")" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -39,8 +35,8 @@
                         <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <input id="receiver-id" type="hidden" name="id" value="" />
-                        <h1>user's name</h1>
+                        <input id="receiver-id" type="hidden" name="id" value="@Model.Id" />
+                        <h1>@Model.UserName</h1>
                         <input name="content" class="form-group input-group message-input" placeholder="Type message here..." />
                         <button type="button" class="btn btn-secondary float-right" style="margin-left: 5px;" data-dismiss="modal">Cancel</button> 
                         <button class="btn btn-primary float-right">Send</button>
