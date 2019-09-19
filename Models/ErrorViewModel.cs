@@ -1,5 +1,3 @@
-using System;
-
 namespace WhyApp.Models
 {
     public class ErrorViewModel

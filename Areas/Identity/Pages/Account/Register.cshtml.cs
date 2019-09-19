@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -71,7 +72,30 @@ namespace WhyApp.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, Picture = "/images/icons/Example.png"};
+                int day = (int)DateTime.Now.DayOfWeek + 1;
+                ApplicationUser user; 
+
+                if (day % 2 == 0) // Sort of randomly assigning a default picture.
+                {
+                    user = new ApplicationUser 
+                            { 
+                                UserName = Input.UserName, 
+                                Email = Input.Email, 
+                                Picture = "/images/icons/default-user-female.png",
+                                Wallpaper = "/images/icons/default-wallpaper.jpg"
+                            };
+                }
+                else 
+                {
+                    user = new ApplicationUser 
+                            { 
+                                UserName = Input.UserName, 
+                                Email = Input.Email, 
+                                Picture = "/images/icons/default-user-male.png",
+                                Wallpaper = "/images/icons/default-wallpaper.jpg"
+                            };
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

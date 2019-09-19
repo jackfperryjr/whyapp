@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System;
 
 namespace WhyApp.Models
@@ -14,5 +15,8 @@ namespace WhyApp.Models
         public DateTime BirthDate { get; set; }
         public string Age { get; set; }
         public string Picture { get; set; }
+        public string Wallpaper { get; set; }
+        [MaxLength(255)]
+        public string Profile { get; set; }
     }
 }

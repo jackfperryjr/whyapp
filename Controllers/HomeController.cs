@@ -33,6 +33,7 @@ namespace WhyApp.Controllers
         }
 
         [Authorize(Roles="Admin")]
+        [Route("admin")]
         public IActionResult Admin(string currentFilter, string sortOrder, string searchString)
         {
             ViewData["EmailSort"] = String.IsNullOrEmpty(sortOrder) ? "Email" : "";
@@ -74,6 +75,7 @@ namespace WhyApp.Controllers
         }
 
         [Authorize(Roles="Admin")]
+        [Route("admin/edituserrole/{id}")]
         public async Task<IActionResult> EditUserRole(string id, int role)  
         { 
             var userRole = "";
@@ -104,7 +106,64 @@ namespace WhyApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Admin));
         }
+        [Route("friends")]
+        public IActionResult Friends(string currentFilter, string sortOrder, string searchString)
+        {
+            ViewData["EmailSort"] = String.IsNullOrEmpty(sortOrder) ? "Email" : "";
+            ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "FirstName" : "";
+            ViewData["UserNameSort"] = String.IsNullOrEmpty(sortOrder) ? "UserName" : "";
+            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
+            ViewData["ZipCodeSort"] = String.IsNullOrEmpty(sortOrder) ? "ZipCode" : "";
+            ViewData["CurrentFilter"] = searchString;
 
+            searchString = currentFilter;
+
+            var users = (from user in _context.Users  
+                        select new  
+                        {  
+                            UserId = user.Id,    
+                            UserName = user.UserName,                                    
+                            FirstName = user.FirstName,  
+                            LastName = user.LastName,
+                            Picture = user.Picture,
+                            Email = user.Email,
+                            City = user.City,
+                            State = user.State
+                        }).ToList()
+                        .Select(u => new ApplicationUser()  
+                        {  
+                            Id = u.UserId,  
+                            UserName = u.UserName,
+                            FirstName = u.FirstName, 
+                            LastName = u.LastName, 
+                            Picture = u.Picture,
+                            Email = u.Email,
+                            City = u.City,
+                            State = u.State
+                        });  
+                        
+                        if (!String.IsNullOrEmpty(searchString))
+            {
+            }
+            users = users.OrderBy(u => u.Email);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(u => u.Email.Contains(searchString.First().ToString() + searchString.Substring(1)) 
+                                || u.UserName.Contains(searchString)
+                                || u.FirstName.Contains(searchString)
+                                || u.City.Contains(searchString)
+                                || u.ZipCode.Contains(searchString)); 
+            }
+
+            return View(users.ToList()); 
+        }
+        [Route("friends/profile/{id}")]
+        public async Task<IActionResult> Profile(string id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+ 
+            return View(user);        
+        }
         public IActionResult Privacy()
         {
             return View();

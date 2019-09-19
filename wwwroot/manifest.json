@@ -1,0 +1,20 @@
+{
+    "name": "WhyApp",
+    "short_name": "WhyApp",
+    "description": "WhyApp? It's your very well-informed friend.",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "icons": [
+      {
+        "src": "/images/icons/whyapp-192x192.png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/images/icons/whyapp-512x512.png",
+        "sizes": "512x512"
+      }
+    ],
+    "display": "standalone",
+    "orientation": "portrait",
+    "start_url": "/"
+  }

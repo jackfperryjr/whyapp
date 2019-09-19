@@ -90,6 +90,12 @@ body {
 .margin-auto {
   margin: 0 auto;
 }
+.top-margin {
+  margin-top: 60px;
+}
+.bottom-margin {
+  margin-top: 20px;
+}
 .message-input {
   min-height: 30px;
   height: auto;
@@ -162,6 +168,45 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
   border: none;
   float: right;
 }
-.top-margin {
-  margin-top: 60px;
+.search {
+  padding: 5px;
+  width: 100%;
+  background-color:#eceff1;
+  border:1px solid transparent;
+}
+
+@-webkit-keyframes spinning /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinning {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.spinning {
+  -webkit-animation: spinning 2.25s linear infinite;
+  -moz-animation: spinning 2.25s linear infinite;
+  -ms-animation: spinning 2.25s linear infinite;
+  -o-animation: spinning 2.25s linear infinite;
+  animation: spinning 2.25s linear infinite;
 }
