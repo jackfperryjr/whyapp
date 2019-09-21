@@ -7,13 +7,13 @@
 <div class="footer-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <a asp-controller="Home" asp-action="Index"><i class="text-primary fas fa-home"></i></a>
-    <a asp-controller="Message" asp-action="Index"><i class="text-primary fas fa-envelope"></i></a>
-    <a asp-controller="Home" asp-action="Friends"><i class="text-primary fas fa-users"></i></a>
-    <a asp-area="Identity" asp-page="/Account/Manage/Index"><i class="text-primary fas fa-user"></i></a>
+    <a asp-controller="Home" asp-action="Index" class="transition"><i class="text-primary fas fa-home"></i></a>
+    <a asp-controller="Message" asp-action="Index" class="transition"><i class="text-primary fas fa-envelope"></i></a>
+    <a asp-controller="Home" asp-action="Friends" class="transition"><i class="text-primary fas fa-users"></i></a>
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="transition"><i class="text-primary fas fa-user"></i></a>
     @if (User.IsInRole("Admin"))
     {
-    <a asp-controller="Home" asp-action="Admin"><i class="text-primary fas fa-users-cog"></i></a>
+    <a asp-controller="Home" asp-action="Admin" class="transition"><i class="text-primary fas fa-users-cog"></i></a>
     }
 }
 else

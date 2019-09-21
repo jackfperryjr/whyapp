@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using WhyApp.Models;
 using WhyApp.Data;
 
@@ -33,13 +34,9 @@ namespace WhyApp.Controllers
         }
 
         [Authorize(Roles="Admin")]
-        [Route("admin")]
-        public IActionResult Admin(string currentFilter, string sortOrder, string searchString)
+        public IActionResult Admin(string searchString)
         {
-            ViewData["EmailSort"] = String.IsNullOrEmpty(sortOrder) ? "Email" : "";
-            ViewData["CurrentFilter"] = searchString;
-
-            searchString = currentFilter;
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var users = (from user in _context.Users  
                         select new  
@@ -51,7 +48,8 @@ namespace WhyApp.Controllers
                             Picture = user.Picture,
                             Email = user.Email,
                             City = user.City,
-                            State = user.State
+                            State = user.State,
+                            ZipCode = user.ZipCode
                         }).ToList()
                         .Select(u => new ApplicationUser()  
                         {  
@@ -62,20 +60,32 @@ namespace WhyApp.Controllers
                             Picture = u.Picture,
                             Email = u.Email,
                             City = u.City,
-                            State = u.State
-                        });  
+                            State = u.State,
+                            ZipCode = u.ZipCode
+                        }).Where(u => u.Id != userId);  
                         
-            users = users.OrderBy(u => u.Email);
             if (!String.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u => u.Email.Contains(searchString.First().ToString() + searchString.Substring(1))); // Search by user email
+                searchString = searchString.ToLower();
+                users = users.Where(u => {
+                                            try 
+                                            {
+                                                return u.UserName.Contains(searchString)
+                                                || u.City.ToLower().Contains(searchString)
+                                                || u.ZipCode.Contains(searchString);
+                                            }
+                                            catch
+                                            {
+                                                return false;
+                                            }
+                                        }
+                                    ); 
             }
 
             return View(users.ToList());  
         }
 
         [Authorize(Roles="Admin")]
-        [Route("admin/edituserrole/{id}")]
         public async Task<IActionResult> EditUserRole(string id, int role)  
         { 
             var userRole = "";
@@ -106,17 +116,9 @@ namespace WhyApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Admin));
         }
-        [Route("friends")]
-        public IActionResult Friends(string currentFilter, string sortOrder, string searchString)
+        public IActionResult Friends(string searchString)
         {
-            ViewData["EmailSort"] = String.IsNullOrEmpty(sortOrder) ? "Email" : "";
-            ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "FirstName" : "";
-            ViewData["UserNameSort"] = String.IsNullOrEmpty(sortOrder) ? "UserName" : "";
-            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
-            ViewData["ZipCodeSort"] = String.IsNullOrEmpty(sortOrder) ? "ZipCode" : "";
-            ViewData["CurrentFilter"] = searchString;
-
-            searchString = currentFilter;
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var users = (from user in _context.Users  
                         select new  
@@ -128,7 +130,8 @@ namespace WhyApp.Controllers
                             Picture = user.Picture,
                             Email = user.Email,
                             City = user.City,
-                            State = user.State
+                            State = user.State,
+                            ZipCode = user.ZipCode
                         }).ToList()
                         .Select(u => new ApplicationUser()  
                         {  
@@ -139,25 +142,30 @@ namespace WhyApp.Controllers
                             Picture = u.Picture,
                             Email = u.Email,
                             City = u.City,
-                            State = u.State
-                        });  
-                        
-                        if (!String.IsNullOrEmpty(searchString))
-            {
-            }
-            users = users.OrderBy(u => u.Email);
+                            State = u.State,
+                            ZipCode = u.ZipCode
+                        }).Where(u => u.Id != userId);  
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u => u.Email.Contains(searchString.First().ToString() + searchString.Substring(1)) 
-                                || u.UserName.Contains(searchString)
-                                || u.FirstName.Contains(searchString)
-                                || u.City.Contains(searchString)
-                                || u.ZipCode.Contains(searchString)); 
+                searchString = searchString.ToLower();
+                users = users.Where(u => {
+                                            try 
+                                            {
+                                                return u.UserName.Contains(searchString)
+                                                || u.City.ToLower().Contains(searchString)
+                                                || u.ZipCode.Contains(searchString);
+                                            }
+                                            catch
+                                            {
+                                                return false;
+                                            }
+                                        }
+                                    ); 
             }
 
             return View(users.ToList()); 
         }
-        [Route("friends/profile/{id}")]
         public async Task<IActionResult> Profile(string id)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);

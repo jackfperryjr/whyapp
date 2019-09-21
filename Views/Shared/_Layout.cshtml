@@ -55,7 +55,7 @@
             <partial name="_LoginPartial" />
         </nav>
     </header>
-    <div class="container">
+    <div id="main" class="container">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
@@ -65,7 +65,6 @@
     <footer>
         <partial name="_FooterNavPartial" />
     </footer>
-
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
@@ -86,6 +85,19 @@
     </environment>
     @RenderSection("Scripts", required: false)
     <script>
+        $(document).ready(function() {
+            $("#main").fadeIn(200);
+            $("a.transition").click(function(event){
+                event.preventDefault();
+                linkLocation = this.href;
+                $("#main").fadeOut(200, redirectPage);      
+            });
+                
+            function redirectPage() {
+                window.location = linkLocation;
+            }
+        });
+
         $("#img-input-user").change(function(event) {
             let imgPath = URL.createObjectURL(event.target.files[0]);
             $("#img-output-user").fadeIn("fast").attr('src',imgPath); 

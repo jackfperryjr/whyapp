@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebEssentials.AspNetCore.Pwa;
 using WhyApp.Data;
 using WhyApp.Models;
 
@@ -36,7 +37,6 @@ namespace WhyApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("AzureConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddCors(options =>
@@ -62,7 +62,11 @@ namespace WhyApp
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
-            services.AddProgressiveWebApp();
+            services.AddProgressiveWebApp(new PwaOptions
+            {
+                RoutesToPreCache = "/, /Home/Friends, /Home/Admin, /Message/Index, /Message/Chat, ",
+                Strategy = ServiceWorkerStrategy.CacheFirst
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

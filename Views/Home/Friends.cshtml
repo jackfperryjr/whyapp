@@ -9,28 +9,39 @@
 <h4 class="top-margin">Friends (all users)</h4>
 <div class="container">
     <div class="panel-body">
-        <form method="post" enctype="multipart/form-data">
+        <form asp-controller="Home" asp-action="Friends" method="get">
             <div class="row">
                 <div class="input-group">
-                    <input class="form-control border-right-0" id="search" type="text" name="SearchString" placeholder='Search...' value="@ViewData["CurrentFilter"]" />
+                    <input class="form-control border-right-0" id="search" type="text" name="SearchString" placeholder='Search...' />
                     <span class="input-group-append">
                         <div class="input-group-text bg-transparent"><i class="fa fa-search"></i></div>
                     </span>                
                 </div>
-                <ul id="contacts" class="list-group message-container top-margin" style="background-color: #ffffff;">                        
-                    @foreach (var users in Model) 
-                    {
-                        @if(users.Email != user.Email)
-                        {
-                            <a asp-action="Profile" asp-route-id="@users.Id">
-                                <li>
-                                    <img class="img-user-navbar" src="@users.Picture" style="margin-right: 10px;" /> <span style="font-size: 18px;">@users.UserName</span>
-                                </li>
-                            </a>
-                        }
-                    }
-                </ul>
             </div>
         </form>
+        <div class="container message-container top-margin" style="background-color: #ffffff;">                        
+            @foreach (var users in Model) 
+            {
+                <a asp-action="Profile" asp-route-id="@users.Id">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <img src="@users.Picture" style="margin-right: 10px;width:70px;height70px;" />
+                        </div>
+                        <div class="col-xs-8">
+                            <span style="font-size: 18px;">@users.UserName</span> <br/>
+                            <span style="font-size: 16px;">@users.City, @users.State</span>
+                        </div>
+                    </div>
+                </a>
+            }
+            @if (!Model.Any())
+            {
+                <div class="row">
+                    <div class="col-xs-10" style="margin: 0 auto;">
+                        <strong>There's nobody like that here.</strong>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
