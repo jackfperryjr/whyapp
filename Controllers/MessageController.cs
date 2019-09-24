@@ -58,9 +58,10 @@ namespace WhyApp.Controllers
                             Picture = user.Picture,
                             Email = user.Email,
                             City = user.City,
-                            State = user.State
-                        }).Distinct().Where(m => (userId == m.ReceiverId) || (userId == m.SenderId)).ToList()
-                        .Select(u => new ApplicationUser()  
+                            State = user.State,
+                            CreateDate = m.CreateDate
+                        }).Where(m => (userId == m.ReceiverId) || (userId == m.SenderId)).ToList().OrderByDescending(m => m.CreateDate)
+                        .Select(u => new ApplicationUserMessageViewModel()  
                         {  
                             Id = u.UserId, 
                             UserName = u.UserName, 
@@ -69,10 +70,12 @@ namespace WhyApp.Controllers
                             Picture = u.Picture,
                             Email = u.Email,
                             City = u.City,
-                            State = u.State
+                            State = u.State,
+                            CreateDate = u.CreateDate
                         });  
                         
-            users = users.OrderBy(u => u.Email);
+            //users = users.OrderBy(u => u.Email);
+            users = users.GroupBy(u => u.Id).Select(u => u.FirstOrDefault());
             return View(users.ToList());
         }
 

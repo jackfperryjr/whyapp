@@ -9,13 +9,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">    
-    <meta name="apple-mobile-web-app-title" content="MoogleApi">
-    <meta name="apple-mobile-web-app-orientations" content="portrait-any">
+    <meta name="apple-mobile-web-app-title" content="WhyApp">
+    <meta name="apple-mobile-web-app-orientations" content="portrait">
     <!-- End of PWA meta elements -->
     <title>WhyApp</title>
     <!-- Start of PWA icons -->
     <!-- Home screen icon -->
-    <link rel="apple-touch-icon" href="~/icons/icon-ff-moogle-180.png">
+    <link rel="apple-touch-icon" href="~/images/icons/whyapp-touch.png">
     <!-- iPhone Xs Max (1242px x 2688px) --> 
     <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="~/images/icons/whyapp-1242x2688.png">
     <!-- iPhone Xr (828px x 1792px) --> 
@@ -46,8 +46,8 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
     </environment>
-    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
@@ -55,9 +55,9 @@
             <partial name="_LoginPartial" />
         </nav>
     </header>
-    <div id="main" class="container">
+    <div class="container">
         <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
+        <main id="main" role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>

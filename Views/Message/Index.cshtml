@@ -1,26 +1,23 @@
-@model IEnumerable<WhyApp.Models.ApplicationUser>
+@model IEnumerable<WhyApp.Models.ApplicationUserMessageViewModel>
 @using WhyApp.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
-    var receiverId = "";
-    var senderId = "";
-    var routeId = "";
 }
 <h4 class="top-margin">Messages</h4>
     <div class="container">
         <div class="panel-body">
             <form method="post" enctype="multipart/form-data">
-            <ul id="contacts" class="list-group message-container" style="background-color: #ffffff;">                        
+            <ul id="contacts" class="list-group message-container">                        
                 @foreach (var users in Model) 
                 {
                     @if(users.Email != user.Email)
                     {
                         <a asp-action="Chat" asp-route-id="@users.Id">
                             <li>
-                                <img class="img-user-navbar" src="@users.Picture" style="margin-right: 10px;" /> <span style="font-size: 18px;">@users.UserName</span>
+                                <img class="img-user-navbar" src="@users.Picture" style="margin-right: 10px;" /> <span style="font-size: 18px;">@users.UserName - @users.CreateDate</span>
                             </li>
                         </a>
                     }
